@@ -1,6 +1,7 @@
+import Navbar from '../lib/components/Navbar'
 
 export default () => {
-  return <div>Hello world</div>
+  return <Navbar/>
 }
 
 // import Head from 'next/head'
