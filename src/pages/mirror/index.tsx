@@ -45,7 +45,7 @@ export default function Mirror(){
 
 async function createOffer() {
     peerConnection = new RTCPeerConnection(servers);
-    console.log(peerConnection);
+    console.log(peerConnection)
     let remoteStream = new MediaStream();
     // const offer = await peerConnection.createOffer();
     // console.log(offer);
