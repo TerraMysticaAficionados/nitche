@@ -80,9 +80,8 @@ function useMedia(videoRef:any, audio:boolean, video:boolean) {
         }
         const videoElem = videoRef?.current
         let mediaRecorder:MediaRecorder;
-        let canceled = false
+        let canceled = false //  cleanup here is a little tricky, see returned function
         let [websocketPromise, websocketCleanup] = getWebsocketPromise(WEBSOCKET_URL)
-        console.log("mounting", canceled)
         Promise.all([
             navigator.mediaDevices.getUserMedia(constraints),
             websocketPromise
@@ -92,38 +91,39 @@ function useMedia(videoRef:any, audio:boolean, video:boolean) {
                 return
             }
             if(websocket == null || videoElem == null || userMediaStream == null) return
-            console.log("promise loaded", userMediaStream, websocket)
+
             //  set state, might have a better way to do this. this makes me nervous bc we avoid rerender only because stream is a nested obj, but we use this to modify recording attributes
             setStream(userMediaStream)
+
             //  set local video
             videoElem.srcObject = userMediaStream
+
             //  set websocket video
             videoElem.onloadedmetadata = (e:Event) => {
                 console.log(videoElem)
             }
 
-            console.log("support", MediaRecorder.isTypeSupported('video/webm;codecs=opus'))
-            let options = {mimeType: 'video/webm;codecs=opus'};
-            mediaRecorder = new MediaRecorder(userMediaStream,options);
-            let i =0
-            let chunks:Blob[] =  []
-            mediaRecorder.ondataavailable = async (e) => {
-                i ++
-                websocket?.send(e.data)
+            if(MediaRecorder.isTypeSupported('video/webm;codecs=opus')) {
+                let options = {mimeType: 'video/webm;codecs=opus'};
+                mediaRecorder = new MediaRecorder(userMediaStream,options);
+                mediaRecorder.ondataavailable = async (e) => {
+                    //  sending data chunk by chunk through websocket.
+                    websocket?.send(e.data)
+                }
+                mediaRecorder.start(MEDIA_RECORDER_MS)
+            } else {
+                alert("Recording not supported by browser, cannot stream to server.")
             }
-            mediaRecorder.onstop = () => {
-                console.log("stop")
-                const dataBlob = new Blob(chunks, { type: 'video/webm;codecs=opus'});
-                const vidURL = window.URL.createObjectURL(dataBlob);
-                videoElem.src = vidURL
-                videoElem.srcObject = null
-            }
-            mediaRecorder.start(MEDIA_RECORDER_MS)
 
         })
         return () => {
             console.log("unmounting")
+            //  canceled will allow us to handle promises in cleanup. 
+            //  promises can resolve after component is unmounted, causing artifacts.
+            //  if canceled = true, in promise handler, we don't run setup.
             canceled = true
+
+            //  close websocket on unmount. 
             websocketCleanup()
         }
     }, [videoRef])
