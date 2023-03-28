@@ -80,7 +80,7 @@ function useMedia(videoRef:any, audio:boolean, video:boolean) {
         const videoElem = videoRef?.current
         let mediaRecorder:MediaRecorder;
         let canceled = false
-        let [websocketPromise, websocketCleanup] = getWebsocketPromise("ws://localhost:8080/stream/123")
+        let [websocketPromise, websocketCleanup] = getWebsocketPromise("ws://localhost:8080/socket-prototype/123")
         console.log("mounting", canceled)
         Promise.all([
             navigator.mediaDevices.getUserMedia(constraints),
