@@ -110,20 +110,7 @@ function useMedia(videoRef:any, audio:boolean, video:boolean) {
             let chunks:Blob[] =  []
             mediaRecorder.ondataavailable = async (e) => {
                 i ++
-                // if(i > 4) {
-                    // if(mediaRecorder.state == "recording") {
-                    //     mediaRecorder.stop()
-                    // } else {
-                    //     return
-                    // }
-                // }
-
-
-                // console.log(mediaRecorder)
-                // let data = await e.data.arrayBuffer()
-                // console.log(data)
                 websocket?.send(e.data)
-                // chunks.push(e.data)
             }
             mediaRecorder.onstop = () => {
                 console.log("stop")
@@ -131,15 +118,8 @@ function useMedia(videoRef:any, audio:boolean, video:boolean) {
                 const vidURL = window.URL.createObjectURL(dataBlob);
                 videoElem.src = vidURL
                 videoElem.srcObject = null
-
-                // websocket.send(blob)
             }
             mediaRecorder.start(1000)
-
-
-
-
-
 
         })
         return () => {
