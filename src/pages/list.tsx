@@ -18,7 +18,7 @@ export default () => {
             </li>
             <li className={styles.experimentListItem}>
                 <div className={styles.experimentListItemLink}>
-                    <Link href="/stream/socket-prototype">- Stream socket prototype</Link>
+                    <Link href="/stream/socket-prototype-streamer">- Stream socket prototype</Link>
                 </div>
                 <div className={styles.experimentListItemDescription}>
                     <ul>
