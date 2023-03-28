@@ -1,0 +1,28 @@
+
+
+.experimentListContainer { 
+    display: flex;
+    justify-content: center;
+}
+
+.experimentList {
+    display: flex;
+    flex-direction: column;
+}
+
+.experimentListItem {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.experimentListItemLink {
+    display: flex;
+    flex-direction: column;
+}
+
+.experimentListItemDescription {
+    padding-left:30px;
+    display: flex;
+    flex-direction: column;
+}

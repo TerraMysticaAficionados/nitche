@@ -2,23 +2,26 @@ import { useEffect, useRef, useState } from "react";
 import useWindowSize from "@/lib/hooks/useWindowSize";
 import WebSocketStream from "websocket-stream";
 
+const STREAM_ID = "socket_prototype_test"
+const MEDIA_RECORDER_MS = 1000
+const WEBSOCKET_URL = "ws://localhost:8080/socket-prototype/" + STREAM_ID
+
 /** 
- * mirror.tsx
- * Preview for a user what they're camera is capturing. 
- * 
+ * socket-prototype.tsx
+ *  1. initialize SocketPrototypeRecorder
+ *  2. waits for 2 promises from websocket and getUserMedia then connects getUserMedia stream to video element and socket
+ *  3. socket connection is via MediaRecorder API which recieves on ondataavailable every MEDIA_RECORDER_MS milliseconds
  */
 export default () => {
 
     const { width, height } = useWindowSize()
-    const [flipped, setFlipped] = useState(true)
+    const [flipped, setFlipped] = useState(false)
     const [videoEnabled, setVideoEnabled] = useState(true)
     const [audioEnabled, setAudioEnabled] = useState(true)
 
     return <div id="mirror-root" style={{
         display: "flex",
-        
     }} >
-
         <div id="fullScreenVideoContainer" style={{
             position: "absolute", 
             left:"0px",
@@ -79,7 +82,7 @@ function useMedia(videoRef:any, audio:boolean, video:boolean) {
         const videoElem = videoRef?.current
         let mediaRecorder:MediaRecorder;
         let canceled = false
-        let [websocketPromise, websocketCleanup] = getWebsocketPromise("ws://localhost:8080/socket-prototype/123")
+        let [websocketPromise, websocketCleanup] = getWebsocketPromise(WEBSOCKET_URL)
         console.log("mounting", canceled)
         Promise.all([
             navigator.mediaDevices.getUserMedia(constraints),
@@ -91,7 +94,7 @@ function useMedia(videoRef:any, audio:boolean, video:boolean) {
             }
             if(websocket == null || videoElem == null || userMediaStream == null) return
             console.log("promise loaded", userMediaStream, websocket)
-            //  set state, might have a better way to do this. this makes me nervous bc we avoid rerender only because stream is a nested obj
+            //  set state, might have a better way to do this. this makes me nervous bc we avoid rerender only because stream is a nested obj, but we use this to modify recording attributes
             setStream(userMediaStream)
             //  set local video
             videoElem.srcObject = userMediaStream
@@ -99,9 +102,6 @@ function useMedia(videoRef:any, audio:boolean, video:boolean) {
             videoElem.onloadedmetadata = (e:Event) => {
                 console.log(videoElem)
             }
-
-
-
 
             console.log("support", MediaRecorder.isTypeSupported('video/webm;codecs=opus'))
             let options = {mimeType: 'video/webm;codecs=opus'};
@@ -119,7 +119,7 @@ function useMedia(videoRef:any, audio:boolean, video:boolean) {
                 videoElem.src = vidURL
                 videoElem.srcObject = null
             }
-            mediaRecorder.start(1000)
+            mediaRecorder.start(MEDIA_RECORDER_MS)
 
         })
         return () => {
