@@ -34,7 +34,7 @@ export default () => {
             <button onClick={() => {
                 setVideoEnabled(!videoEnabled)
             }}>{videoEnabled ? "disable video" : "enable video"}</button>
-            <WebRTCPlayer 
+            <SocketRecorderPrototype
                 style={{
                     width:width, 
                     maxHeight:height, 
@@ -47,7 +47,7 @@ export default () => {
     </div>
 }
 
-function WebRTCPlayer({style, audio, video}:any) {
+function SocketRecorderPrototype({style, audio, video}:any) {
     const videoRef = useRef<HTMLVideoElement>(null)
     const [localStream] = useMedia(videoRef, audio, video)
     return <video ref={videoRef} autoPlay={true} style={style} controls={true} muted={true}></video>
@@ -100,7 +100,6 @@ function useMedia(videoRef:any, audio:boolean, video:boolean) {
             videoElem.onloadedmetadata = (e:Event) => {
                 console.log(videoElem)
             }
-
 
 
 
@@ -190,52 +189,4 @@ function getWebsocketPromise(url:string): [Promise<WebSocket|null>, Function]{
     console.log("getWebsocketPromise", websocketPromise)
     return [websocketPromise, cleanupPromise]
 }
-
-async function useWebsocket(url: string) {
-    let resolveWebsocket: (value: unknown) => void;
-    let rejectWebsocket: (reason?: any) => void;
-    const websocketPromise = new Promise((resolve, reject) => {
-        resolveWebsocket = resolve
-        rejectWebsocket = reject
-    })
-    let [websocket, setWebsocket] = useState<WebSocket>()
-
-    useEffect(() => {
-        const websocketTemp = new WebSocket(url)
-        setWebsocket(websocketTemp)
-        // websocket.addEventListener("error", (event) => {
-        //     console.log("error!", event)
-        //     return rejectWebsocket(event)
-        // })
-        // websocket.addEventListener("open", () => {
-        //     return resolveWebsocket(websocket)
-        // })
-        // return () => {
-        //     websocket.close()
-        // }
-    }, [])
-
-    return websocket
-}
-
-
-async function* streamIter(stream: MediaStream) {
-    const mediaRecorder = new MediaRecorder(stream);
-    let blobs: Blob[] = []
-    let done = false
-    mediaRecorder.ondataavailable = (e) => {
-         blobs.push(e.data)
-         if(e.data == null) {
-            done = true
-         }
-    }
-    mediaRecorder.start(1000)
-    while(blobs.length > 0 || !done) {
-        yield blobs.pop()
-    }
-    return null
-}
-
-
-
 
