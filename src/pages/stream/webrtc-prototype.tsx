@@ -104,7 +104,7 @@ function useMedia(videoRef:any, audio:boolean, video:boolean) {
                 }
             })
         }).then((peerConnection) => {
-            localPeerConnection.current = peerConnection
+            localPeerConnection.current = peerConnection || null
         })
 
         return () => {
