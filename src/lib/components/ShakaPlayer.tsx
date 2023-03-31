@@ -19,11 +19,6 @@ export default function Player() {
         player.load(manifestUri);
         const ui = new shaka.ui.Overlay(player, videoContainerRef.current, videoRef.current);
         const controls = ui.getControls();
-        //@ts-ignore
-        // videoRef.current['ui'].configure(config);
-        
-        // const ui = new shaka.ui.Overlay(player, videoContainer, video);
-        // const controls = ui.getControls();
         
         player.configure({});
         return () => {
