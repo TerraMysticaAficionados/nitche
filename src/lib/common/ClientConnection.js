@@ -43,13 +43,30 @@ class ConnectionClient {
         sdpSemantics: 'unified-plan'
       });
 
-      // NOTE(mroberts): This is a hack so that we can get a callback when the
-      // RTCPeerConnection is closed. In the future, we can subscribe to
-      // "connectionstatechange" events.
-      localPeerConnection.close = function() {
-        fetch(`${host}${prefix}/connections/${id}`, { method: 'delete' }).catch(() => {});
-        return RTCPeerConnection.prototype.close.apply(this, arguments);
-      };
+      localPeerConnection.addEventListener("connectionstatechange", async () => {
+        switch (localPeerConnection.connectionState) {
+          case "new":
+          case "checking":
+            console.log("Connecting…");
+            break;
+          case "connected":
+            console.log("Online");
+            break;
+          case "disconnected":
+            console.log("Disconnecting…");
+            break;
+          case "closed":
+            console.log("Offline");
+            await fetch(`${host}${prefix}/connections/${id}`, { method: 'delete' }).catch(() => {});
+            break;
+          case "failed":
+            console.log("Error");
+            break;
+          default:
+            console.log("Unknown");
+            break;
+        }
+      })
 
       try {
         await localPeerConnection.setRemoteDescription(remotePeerConnection.localDescription);
