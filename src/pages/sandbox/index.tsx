@@ -43,7 +43,7 @@ export default () => {
 
             <li className={styles.experimentListItem}>
                 <div className={styles.experimentListItemLink}>
-                    <Link href="/sandbox/webrtc/stream">- Stream webcam via WebRTC to server recording</Link>
+                    <Link href="/sandbox/webrtc/broadcaster">- Stream webcam via WebRTC to server recording</Link>
                 </div>
                 <div className={styles.experimentListItemDescription}>
                     <ul>
@@ -52,6 +52,16 @@ export default () => {
                 </div>
             </li>
 
+            <li className={styles.experimentListItem}>
+                <div className={styles.experimentListItemLink}>
+                    <Link href="/sandbox/webrtc/viewer">- Watch webcam via WebRTC to server recording</Link>
+                </div>
+                <div className={styles.experimentListItemDescription}>
+                    <ul>
+                        <li>WebRTC & SDP</li>
+                    </ul>
+                </div>
+            </li>
 
             <li className={styles.experimentListItem}>
                 <div className={styles.experimentListItemLink}>
