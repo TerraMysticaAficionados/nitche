@@ -1,7 +1,7 @@
 import styles from '@/styles/List.module.css'
 import Link from "next/link"
 
-// @todo: move all this into a sandbox/playground folder
+// @todo: make /sandbox private
 export default () => {
     return <div className={styles.experimentListContainer}>
         <ul className={styles.experimentList}>
