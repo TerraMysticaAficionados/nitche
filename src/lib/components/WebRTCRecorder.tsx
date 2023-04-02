@@ -53,6 +53,10 @@ export function useMedia(videoRef:any, audio:boolean, video:boolean) {
                 }
             })
         }).then((peerConnection) => {
+            if(canceled) {
+                peerConnection?.close()
+                return
+            }
             localPeerConnection.current = peerConnection || null
         })
 
