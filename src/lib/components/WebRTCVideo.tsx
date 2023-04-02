@@ -39,7 +39,6 @@ export function useWebRTCRef(videoRef:React.RefObject<HTMLVideoElement>) {
     useEffect(() => {
         if(videoRef.current == undefined) return
         const videoElem = videoRef.current
-
         const connectionClient = new ConnectionClient({
             host: "http://localhost:8080/",
             prefix: "webrtc-viewer"

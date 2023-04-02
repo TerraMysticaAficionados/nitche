@@ -17,11 +17,9 @@ export function useMedia(videoRef:any, audio:boolean, video:boolean) {
 
     useEffect(() => {
         stream?.current?.getAudioTracks().forEach(track => {
-            console.log("disabled audio")
             track.enabled = audio
         })
         stream?.current?.getVideoTracks().forEach(track => {
-            console.log("disabled video")
             track.enabled = video
         })
     }, [audio, video])
