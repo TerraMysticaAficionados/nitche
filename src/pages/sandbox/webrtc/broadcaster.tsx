@@ -60,7 +60,6 @@ function useMedia(videoRef:any, audio:boolean, video:boolean) {
         audio,
     };
 
-    console.log("av",audio,video)
     useEffect(() => {
         stream?.current?.getAudioTracks().forEach(track => {
             console.log("disabled audio")
