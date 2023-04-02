@@ -13,32 +13,29 @@ import ConnectionClient from "@/lib/common/ClientConnection";
 export default () => {
 
     const { width, height } = useWindowSize()
-    const [flipped, setFlipped] = useState(false)
     const [videoEnabled, setVideoEnabled] = useState(true)
     const [audioEnabled, setAudioEnabled] = useState(true)
     
     return <div className="videoContainer" style={{
-        display: "flex",
+        position: "absolute",
+        left:"0px",
+        right:"0px"
     }} >
         <div className="fullscreenVideoContainer" style={{
-            position: "absolute",
-            left:"0px",
-            right:"0px"
+            display: "flex",
         }}>
             <WebRTCPlayer 
                 style={{
                     width:width, 
                     maxHeight:height, 
-                    scale:flipped ? "-1 1" : "1 1"
                 }}
                 audio={audioEnabled}
                 video={videoEnabled}
             />
         </div>
-        <div className="videoControls">
-            <button className="button" onClick={() => {
-                setFlipped(!flipped)
-            }}>Flip</button>
+        <div className="videoControls" style={{
+            display: "flex",
+        }}>
             <button onClick={() => {
                 setAudioEnabled(!audioEnabled)
             }}>{audioEnabled ? "mute audio" : "enable audio"}</button>
@@ -57,18 +54,20 @@ function WebRTCPlayer({style, audio, video}:any) {
 
 function useMedia(videoRef:any, audio:boolean, video:boolean) { 
     const localPeerConnection = useRef<RTCPeerConnection|null>(null)
-    let [stream, setStream] = useState<MediaStream|null>(null)
+    let stream = useRef<MediaStream|null>(null)
     const constraints = {
         video,
         audio,
     };
 
+    console.log("av",audio,video)
     useEffect(() => {
-        if(!stream) return
-        stream?.getAudioTracks().forEach(track => {
+        stream?.current?.getAudioTracks().forEach(track => {
+            console.log("disabled audio")
             track.enabled = audio
         })
-        stream?.getVideoTracks().forEach(track => {
+        stream?.current?.getVideoTracks().forEach(track => {
+            console.log("disabled video")
             track.enabled = video
         })
     }, [audio, video])
@@ -91,12 +90,12 @@ function useMedia(videoRef:any, audio:boolean, video:boolean) {
                 prefix: "webrtc-broadcaster"
             })
             videoElem.srcObject = localMediaStream
+            stream.current = localMediaStream
             return connectionClient.createConnection({
                 beforeAnswer: (peerConnection:RTCPeerConnection) => {
                     localMediaStream.getTracks().forEach(track => {
                         peerConnection.addTrack(track, localMediaStream)
                     })
-                    const {close} = peerConnection
                 }
             })
         }).then((peerConnection) => {
