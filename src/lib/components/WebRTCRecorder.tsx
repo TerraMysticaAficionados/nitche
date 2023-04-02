@@ -1,58 +1,13 @@
-import { useEffect, useRef, useState } from "react";
-import useWindowSize from "@/lib/hooks/useWindowSize";
-import WebSocketStream from "websocket-stream";
-import ConnectionClient from "@/lib/common/ClientConnection";
-import { WebRTCRecorder } from "@/lib/components/WebRTCRecorder";
+import { useEffect, useRef } from "react"
+import ConnectionClient from "@/lib/common/ClientConnection"
 
-
-/** 
- * mirror.tsx
- * Preview for a user what they're camera is capturing. 
- * 
- */
-export default () => {
-
-    const { width, height } = useWindowSize()
-    const [videoEnabled, setVideoEnabled] = useState(true)
-    const [audioEnabled, setAudioEnabled] = useState(true)
-    
-    return <div className="videoContainer" style={{
-        position: "absolute",
-        left:"0px",
-        right:"0px"
-    }} >
-        <div className="fullscreenVideoContainer" style={{
-            display: "flex",
-        }}>
-            <WebRTCRecorder
-                style={{
-                    width:width, 
-                    maxHeight:height, 
-                }}
-                audio={audioEnabled}
-                video={videoEnabled}
-            />
-        </div>
-        <div className="videoControls" style={{
-            display: "flex",
-        }}>
-            <button onClick={() => {
-                setAudioEnabled(!audioEnabled)
-            }}>{audioEnabled ? "mute audio" : "enable audio"}</button>
-            <button onClick={() => {
-                setVideoEnabled(!videoEnabled)
-            }}>{videoEnabled ? "disable video" : "enable video"}</button>
-        </div>
-    </div>
-}
-
-function WebRTCPlayer({style, audio, video}:any) {
+export function WebRTCRecorder({style, audio, video}:any) {
     const videoRef = useRef<HTMLVideoElement>(null)
     const [localStream] = useMedia(videoRef, audio, video)
     return <video ref={videoRef} autoPlay={true} style={style} controls={true} muted={true}></video>
 }
 
-function useMedia(videoRef:any, audio:boolean, video:boolean) { 
+export function useMedia(videoRef:any, audio:boolean, video:boolean) { 
     const localPeerConnection = useRef<RTCPeerConnection|null>(null)
     let stream = useRef<MediaStream|null>(null)
     const constraints = {
@@ -110,6 +65,3 @@ function useMedia(videoRef:any, audio:boolean, video:boolean) {
 
     return [stream]
 }
-
-
-

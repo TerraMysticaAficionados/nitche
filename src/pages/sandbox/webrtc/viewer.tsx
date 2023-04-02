@@ -1,7 +1,6 @@
-import React, { CSSProperties, RefObject, useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import useWindowSize from "@/lib/hooks/useWindowSize";
-import ConnectionClient from "@/lib/common/ClientConnection";
-
+import { WebRTCVideo } from "@/lib/components/WebRTCVideo";
 
 
 /** 
@@ -31,143 +30,79 @@ export default () => {
             <button onClick={() => {
                 setVideoEnabled(!videoEnabled)
             }}>{videoEnabled ? "disable video" : "enable video"}</button>
-            <WebRTCVideo 
-                style={{
-                    width:width, 
-                    maxHeight:height,
-                }}
-                controls={true} 
-                muted={true}
-                autoPlay={true} 
-            >
-                <div style={{
-                    display:"flex",
-                    flexDirection:"column",
-                }}>
-                    <div style={{
-                        display:"flex", 
-                        flexDirection:"row",
-                    }}>
-                        <div style={{flexDirection: "column"}}>
-                            <div>Video 1</div>
-                            <video ></video>
-                        </div>
-                        <div style={{flexDirection: "column"}}>
-                            <div>Video 2</div>
-                            <video ></video>
-                        </div>
-                    </div>
-                    <div style={{
-                        display:"flex", 
-                        flexDirection:"row",
-                    }}>
-                        <div style={{flexDirection: "column"}}>
-                            <div>Video 3</div>
-                            <video ></video>
-                        </div>
-                        <div style={{flexDirection: "column"}}>
-                            <div>Video 4</div>
-                            <video ></video>
-                        </div>
-                    </div>
-                </div>
-            </WebRTCVideo>
+                <WebRTCVideo style={{width:width, maxHeight:height}} autoPlay={true /* passing props to video*/}/> 
         </div>
     </div>
 }
 
+// export interface WebRTCVideoProps {
+//     style?: CSSProperties
+//     controls?: boolean
+//     muted?: boolean
+//     autoPlay?: boolean
+//     poster?: string
+// }
 
-export interface WebRTCVideoProps {
-    children?: React.ReactNode   //  the usual ReactNode type is too loose for our case, we ignore strings
-    style?: CSSProperties
-    controls?: boolean
-    muted?: boolean
-    autoPlay?: boolean
-    flipped?: boolean
-    poster?: string
-}
+// const WebRTCVideo:React.FC<WebRTCVideoProps>  = ({
+//     style,
+//     controls = true,
+//     muted = true,
+//     autoPlay = true,
+//     poster = undefined,
+// }) => {
+//     const videoRef = useRef<HTMLVideoElement>(null)
+//     useWebRTCRef(videoRef)
+//     return <video   //  advantages/disadvantages with canvas
+//         ref={videoRef} 
+//         style={style} 
+//         controls={controls} 
+//         muted={muted} 
+//         autoPlay={autoPlay}
+//         poster={poster}
+//     />
+// }
 
-const WebRTCVideo:React.FC<WebRTCVideoProps>  = ({
-    style,
-    children,
-    controls = true,
-    muted = true,
-    autoPlay = true,
-    poster = undefined,
-}) => {
-    const videoPlayer = []
-    const childrenStack:React.ReactElement[] = []
+// /**
+//  * Attach a webrtc stream to an HTMLVideoElement
+//  * @param videoRef 
+//  * @returns 
+//  */
+// export function useWebRTCRef(videoRef:RefObject<HTMLVideoElement>) { 
+//     const localPeerConnection = useRef<RTCPeerConnection|null>(null)
+//     useEffect(() => {
+//         if(videoRef.current == undefined) return
+//         const videoElem = videoRef.current
 
-    console.log("-1", children)
-    React.Children.forEach(children, function (child) {
-        console.log("0", child)
-        if(!React.isValidElement(child)) return
-        childrenStack.push(child)
-        console.log("1", child)
-    })
-
-    while(childrenStack.length > 0) {
-        let child = childrenStack.pop()
-        console.log("2", child)
-        if(React.Children.count(child) > 1) {
-            console.log("3", child)
-        //     console.log("count")
-            // React.Children.forEach(child.children, (child) => {
-            //     if(!React.isValidElement(child)) return
-            //     childrenStack.push(child)
-            // })
-        }
-    }
-
-    let videoPlayers = children
-    const videoRef = useRef<HTMLVideoElement>(null)
-    useWebRTC(videoRef)
-    return <video   //  advantages/disadvantages with canvas
-        ref={videoRef} 
-        style={style} 
-        controls={controls} 
-        muted={muted} 
-        autoPlay={autoPlay}
-        poster={poster}
-    />
-}
-
-export function useWebRTC(videoRef:RefObject<HTMLVideoElement>) { 
-    const localPeerConnection = useRef<RTCPeerConnection|null>(null)
-    useEffect(() => {
-        if(videoRef.current == undefined) return
-        const videoElem = videoRef.current
-
-        
-        const connectionClient = new ConnectionClient({
-            host: "http://localhost:8080/",
-            prefix: "webrtc-viewer"
-        })
-        let canceled = false
-        connectionClient.createConnection({
-            beforeAnswer: (peerConnection:RTCPeerConnection) => {
-                const remoteStream = new MediaStream(peerConnection.getReceivers().map(receiver => receiver.track));
-                videoElem.srcObject = remoteStream;
-                peerConnection.addEventListener("connectionstatechange", () => {
-                    if (peerConnection.connectionState == "closed") {
-                        videoElem.srcObject = null
-                    } 
-                })
-            }
-        }).then(peerConnection => {
-            if(canceled) peerConnection.close()
-            localPeerConnection.current = peerConnection || null
-        }).catch(error => {
-            localPeerConnection?.current?.close()
-            console.log(error)
-        }) 
-        return () => {
-            canceled = true
-            localPeerConnection?.current?.close()
-            videoElem.srcObject = null
-        }
-    }, [videoRef])
-}
+//         const connectionClient = new ConnectionClient({
+//             host: "http://localhost:8080/",
+//             prefix: "webrtc-viewer"
+//         })
+//         let canceled = false
+//         connectionClient.createConnection({
+//             beforeAnswer: (peerConnection:RTCPeerConnection) => {
+//                 const remoteStream = new MediaStream(peerConnection.getReceivers().map(receiver => receiver.track));
+//                 videoElem.srcObject = remoteStream;
+//                 peerConnection.addEventListener("connectionstatechange", () => {
+//                     if (peerConnection.connectionState == "closed") {
+//                         videoElem.srcObject = null
+//                     } 
+//                 })
+//             }
+//         }).then(peerConnection => {
+//             if(canceled) peerConnection.close()
+//             localPeerConnection.current = peerConnection || null
+//         }).catch(error => {
+//             localPeerConnection?.current?.close()
+//             console.log(error)
+//         }) 
+//         return () => {
+//             canceled = true
+//             localPeerConnection?.current?.close()
+//             videoElem.srcObject = null
+//         }
+//     }, [videoRef])
+//     return localPeerConnection
+// }
 
 
 
