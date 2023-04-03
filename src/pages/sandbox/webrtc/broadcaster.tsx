@@ -5,7 +5,7 @@ import { WebRTCRecorder } from "@/lib/components/WebRTCRecorder";
 
 
 /** 
- * mirror.tsx
+ * webrtc/broadcaster.tsx
  * Preview for a user what they're camera is capturing. 
  * 
  */

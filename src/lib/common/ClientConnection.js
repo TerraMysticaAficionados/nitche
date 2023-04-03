@@ -1,7 +1,6 @@
 'use strict';
+//  adapted from node-webrtc/node-webrtc-examples
 
-// const DefaultRTCPeerConnection = require('wrtc').RTCPeerConnection;
-// const { RTCSessionDescription } = require('wrtc');
 const TIME_TO_HOST_CANDIDATES = 3000;  // NOTE(mroberts): Too long.
 
 class ConnectionClient {

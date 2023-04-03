@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import useWindowSize from "@/lib/hooks/useWindowSize";
-import getWebsocketPromise from "@/lib/common/WebsocketPromise";
+import getWebsocketPromise from "@/lib/common/WebSocketPromise";
 
 /** 
  * Consuming a stream from a websocket using ws-streaming
