@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import useWindowSize from "@/lib/hooks/useWindowSize";
-import getWebsocketPromise from "@/lib/common/WebsocketPromise";
+import getWebsocketPromise from "@/lib/common/WebSocketPromise.js";
 
 const STREAM_ID = "socket_prototype_test"
 const MEDIA_RECORDER_MS = 1000
