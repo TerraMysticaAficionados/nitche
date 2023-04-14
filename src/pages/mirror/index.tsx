@@ -1,30 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import useWindowSize from "@/lib/hooks/useWindowSize";
 
-/**
+/** 
  * mirror.tsx
- * Preview for a user what they're camera is capturing.
- *
+ * Preview for a user what they're camera is capturing. 
+ * 
  */
-
-let peerConnection;
-let servers = {
-    iceServers:[
-        {
-            urls:['stun:stun1.1.google.com:19302', 'stun:stun2.1.google.com:19302']
-        }
-    ]
-}
-
-export default function Mirror(){
+export default () => {
 
     const { width, height } = useWindowSize()
     const [flipped, setFlipped] = useState(true)
-
+    
 
     return <div id="mirror-root" style={{
-        display: "flex",    //  flex-box is excellent for arranging pages. usually best when nested: a parent flex element to define boundery, child to be oriented within parent, then content within that. This allows content to be swapped out easily and the overall position on the page to be relatively stable.
-
+        display: "flex",    //  flex-box is excellent for arranging pages. usually best when nested: a parent flex element to define boundery, child to be oriented within parent, then content within that. This allows content to be swapped out easily and the overall position on the page to be relatively stable. 
+        
     }} >
 
         <div id="fullScreenVideoContainer" style={{
@@ -35,39 +25,24 @@ export default function Mirror(){
             <button onClick={() => {
                 setFlipped(!flipped)
             }}>Flip</button>
-            <button onClick={() => {
-                createOffer();
-            }}>stream this shit</button>
             <WebRTCPlayer style={{width:width, maxHeight:height, scale:flipped ? "-1 1" : "1 1"}}/>
         </div>
     </div>
 }
 
-async function createOffer() {
-    peerConnection = new RTCPeerConnection(servers);
-    console.log(peerConnection)
-    let remoteStream = new MediaStream();
-    // const offer = await peerConnection.createOffer();
-    // console.log(offer);
-    // await peerConnection.setLocalDescription(offer);
-    console.log(peerConnection);
-}
-
 function WebRTCPlayer(props:any) {
     const videoRef = useRef<HTMLVideoElement>(null)
     const [stream] = useMedia(videoRef)
-    return <video id="vidPlayer" ref={videoRef} autoPlay={true} {...props}></video>
+    return <video ref={videoRef} autoPlay={true} {...props}></video>
 }
 
-function useMedia(videoRef:any) {
+function useMedia(videoRef:any) { 
     let [stream, setStream] = useState<any>(null)
     const constraints = {
         video: true,
         audio: true,
     };
     useEffect(() => {
-        //  navigator.mediaDevices.getUserMedia for camera
-        //  navigator.mediaDevices.getDisplayMedia for screenshare
         if(navigator.mediaDevices.getUserMedia == undefined) {
             alert('Your browser does not support getUserMedia API');
             return
@@ -85,6 +60,7 @@ function useMedia(videoRef:any) {
             console.log(err)
         });
     }, [videoRef])
+
     return [stream]
 }
 
