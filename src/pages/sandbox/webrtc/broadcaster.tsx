@@ -16,9 +16,13 @@ export default () => {
     const [audioEnabled, setAudioEnabled] = useState(true)
     
     return <div className="videoContainer" style={{
+<<<<<<< Updated upstream
         position: "absolute",
         left:"0px",
         right:"0px"
+=======
+        width: "1000px"
+>>>>>>> Stashed changes
     }} >
         <div className="fullscreenVideoContainer" style={{
             display: "flex",
