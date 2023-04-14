@@ -1,24 +1,20 @@
 const Navbar = () => {
   return (
-    <nav style={{
-      height: '5rem',
-      width: '100vw',
-      backgroundColor: 'blue',
-      position: 'fixed'!,
-      zIndex: 1000,
-      boxShadow: '0 4px 2px -2px black',
-      display: 'flex',
-      alignItems: 'stretch',
-    }}>
-      <div style={{
-
-        height: '100%',
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-      }}>
-
+    // <nav style={{
+    //   height: '3rem',
+    //   width: '100vw',
+    //   backgroundColor: 'blue',
+    //   position: 'fixed'!,
+    //   zIndex: 1000,
+    //   boxShadow: '0 4px 2px -2px black',
+    //   display: 'flex',
+    //   alignItems: 'stretch',
+    // }}>
+    <nav className="fixed w-full h-12 z-50
+                    flex items-stretch
+                    bg-yellow-400 drop-shadow-lg">
+      <div className="w-full h-full
+                      flex items-center justify-around">
       <div style={{
         display: 'flex',
         flexDirection: 'row',

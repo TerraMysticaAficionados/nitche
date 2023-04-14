@@ -11,11 +11,10 @@ export default () => {
       <div style={{
         height: '100%',
         width: '100%',
-        paddingTop: '5rem',
+        paddingTop: '3rem',
       }}>
         <Sidebar/>
           <div style={{
-            marginLeft: '15rem', // needs to scale based on the width of the sidebars
             display: 'flex',
           }}>
             <main style={{
@@ -55,7 +54,7 @@ function Player() {
 
 function ChatBar() {
   return (
-    <div style={{
+    <div id='chatbar' style={{
       width: '21.25rem',
       height: '100vh',
       backgroundColor: 'pink',
