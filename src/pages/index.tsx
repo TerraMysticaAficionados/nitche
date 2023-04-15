@@ -1,6 +1,6 @@
-import Navbar from '../lib/components/Navbar.tsx';
-import Sidebar from '../lib/components/Sidebar.tsx';
-
+import Navbar from '../lib/components/Navbar';
+import Sidebar from '../lib/components/Sidebar';
+import { WebRTCVideo } from '@/lib/components/WebRTCVideo';
 export default () => {
   return (
     <div style={{
@@ -14,52 +14,31 @@ export default () => {
         paddingTop: '3rem',
       }}>
         <Sidebar/>
-          <div style={{
-            display: 'flex',
-          }}>
-            <main style={{
-              height: '100%',
-              width: '100%',
-              backgroundColor: 'green',
-              display: 'flex',
-              flexDirection: 'column',
-            }}>
-              <Player></Player>
+        <div className='flex w-full h-full'>
 
+        <main
+          className='flex flex-col items-stretch h-full w-full ml-14 lg:ml-52 bg-green-300'
+          // className='flex flex-col h-full w-full
+          //             ml-14 lg:ml-52 bg-green-300'
+          >
+            <WebRTCVideo/>
 
-            </main>
-              <ChatBar></ChatBar>
+            <section id="info" className='h-full'> hi i'm david beame the greatest streamer in a generation</section>
+          </main>
+          <ChatBar></ChatBar>
         </div>
-     </div>
-    </div>
-  )
-}
-
-
-function Player() {
-  return (
-    <div style={{
-      width: '100%',
-      maxHeight: 'calc(100vh - 16rem)',
-      paddingBottom: '56.25%',
-      backgroundColor: 'red',
-    }}>
-      <div style={{
-        width: '100%',
-      }}>
       </div>
     </div>
   )
 }
 
+
 function ChatBar() {
   return (
-    <div id='chatbar' style={{
-      width: '21.25rem',
-      height: '100vh',
-      backgroundColor: 'pink',
-    }}>
+    <div id='chatbar'
+    className='hidden md:block h-screen md:h-full w-96 bg-pink-300'
 
+    >
     </div>
   )
 }

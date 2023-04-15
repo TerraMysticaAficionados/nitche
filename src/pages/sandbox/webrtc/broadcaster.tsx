@@ -4,33 +4,27 @@ import ConnectionClient from "@/lib/common/ClientConnection";
 import { WebRTCRecorder } from "@/lib/components/WebRTCRecorder";
 
 
-/** 
+/**
  * webrtc/broadcaster.tsx
- * Preview for a user what they're camera is capturing. 
- * 
+ * Preview for a user what they're camera is capturing.
+ *
  */
 export default () => {
 
     const { width, height } = useWindowSize()
     const [videoEnabled, setVideoEnabled] = useState(true)
     const [audioEnabled, setAudioEnabled] = useState(true)
-    
+
     return <div className="videoContainer" style={{
-<<<<<<< Updated upstream
-        position: "absolute",
-        left:"0px",
-        right:"0px"
-=======
         width: "1000px"
->>>>>>> Stashed changes
     }} >
         <div className="fullscreenVideoContainer" style={{
             display: "flex",
         }}>
             <WebRTCRecorder
                 style={{
-                    width:width, 
-                    maxHeight:height, 
+                    width:width,
+                    maxHeight:height,
                 }}
                 audio={audioEnabled}
                 video={videoEnabled}

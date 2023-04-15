@@ -7,11 +7,14 @@ export function WebRTCRecorder({style, audio, video}:any) {
     return <video ref={videoRef} autoPlay={true} style={style} controls={true} muted={true}></video>
 }
 
-export function useMedia(videoRef:any, audio:boolean, video:boolean) { 
+export function useMedia(videoRef:any, audio:boolean, video:boolean) {
     const localPeerConnection = useRef<RTCPeerConnection|null>(null)
     let stream = useRef<MediaStream|null>(null)
     const constraints = {
-        video,
+        video: {
+            aspectRatio: 16/9,
+            facingMode: 'user',
+        },
         audio,
     };
 

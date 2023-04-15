@@ -12,7 +12,7 @@ export interface WebRTCVideoProps {
 
 export const WebRTCVideo:React.FC<WebRTCVideoProps>  = ({
     style,
-    controls = true,
+    controls = false,
     muted = true,
     autoPlay = true,
     poster = undefined,
@@ -20,10 +20,9 @@ export const WebRTCVideo:React.FC<WebRTCVideoProps>  = ({
     const videoRef = useRef<HTMLVideoElement>(null)
     useWebRTCRef(videoRef)
     return <video   //  advantages/disadvantages with canvas
-        ref={videoRef} 
-        style={style} 
-        controls={controls} 
-        muted={muted} 
+        ref={videoRef}
+        controls={controls}
+        muted={muted}
         autoPlay={autoPlay}
         poster={poster}
     />
@@ -31,10 +30,10 @@ export const WebRTCVideo:React.FC<WebRTCVideoProps>  = ({
 
 /**
  * Attach a webrtc stream to an HTMLVideoElement
- * @param videoRef 
- * @returns 
+ * @param videoRef
+ * @returns
  */
-export function useWebRTCRef(videoRef:React.RefObject<HTMLVideoElement>) { 
+export function useWebRTCRef(videoRef:React.RefObject<HTMLVideoElement>) {
     const localPeerConnection = useRef<RTCPeerConnection|null>(null)
     useEffect(() => {
         if(videoRef.current == undefined) return
@@ -51,7 +50,7 @@ export function useWebRTCRef(videoRef:React.RefObject<HTMLVideoElement>) {
                 peerConnection.addEventListener("connectionstatechange", () => {
                     if (peerConnection.connectionState == "closed") {
                         videoElem.srcObject = null
-                    } 
+                    }
                 })
             }
         }).then(peerConnection => {
@@ -60,7 +59,7 @@ export function useWebRTCRef(videoRef:React.RefObject<HTMLVideoElement>) {
         }).catch(error => {
             localPeerConnection?.current?.close()
             console.log(error)
-        }) 
+        })
         return () => {
             canceled = true
             localPeerConnection?.current?.close()

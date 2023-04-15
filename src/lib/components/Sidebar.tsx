@@ -4,7 +4,7 @@ const Sidebar = () => {
     <div
       id={'sidebar'}
       className='fixed h-full w-14 lg:w-52
-               bg-cyan-500 lg:bg-green-300'>
+               bg-cyan-500 '>
       <Scrollbar/>
     </div>
   )
