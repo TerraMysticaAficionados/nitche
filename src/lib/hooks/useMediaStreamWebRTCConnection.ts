@@ -47,7 +47,7 @@ export function useMediaStreamWebRTCConnection({
             } else if (localMediaStream == null) {
                 return
             }
-            const connectionClient = new ConnectionClient({host, prefix})
+            const connectionClient = new ConnectionClient({host, prefix, streamId})
             mediaStream.current = localMediaStream
             return connectionClient.createConnection({
                 beforeAnswer: (peerConnection:RTCPeerConnection) => {

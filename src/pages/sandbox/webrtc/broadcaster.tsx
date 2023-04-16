@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useWindowSize from "@/lib/hooks/useWindowSize";
 import { WebRTCRecorder } from "@/lib/components/WebRTCRecorder";
-
+import { randomUUID } from "crypto";
 
 /**
  * webrtc/broadcaster.tsx
@@ -21,6 +21,7 @@ export default () => {
             display: "flex",
         }}>
             <WebRTCRecorder
+                streamId="sandbox-stream-id"
                 style={{
                     width:width,
                     maxHeight:height,
