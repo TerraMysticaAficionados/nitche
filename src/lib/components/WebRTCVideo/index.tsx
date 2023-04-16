@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react"
-import ConnectionClient from "@/lib/common/ClientConnection"
-
+import ConnectionClient from "@/lib/common/ConnectionClient"
 
 export interface WebRTCVideoProps {
     style?: React.CSSProperties

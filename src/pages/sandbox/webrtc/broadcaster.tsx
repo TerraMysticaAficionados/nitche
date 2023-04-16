@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import useWindowSize from "@/lib/hooks/useWindowSize";
-import ConnectionClient from "@/lib/common/ClientConnection";
 import { WebRTCRecorder } from "@/lib/components/WebRTCRecorder";
 
 
@@ -12,8 +11,8 @@ import { WebRTCRecorder } from "@/lib/components/WebRTCRecorder";
 export default () => {
 
     const { width, height } = useWindowSize()
-    const [videoEnabled, setVideoEnabled] = useState(true)
-    const [audioEnabled, setAudioEnabled] = useState(true)
+    const [muted, setMuted] = useState(false)
+    const [paused, setPaused] = useState(false)
 
     return <div className="videoContainer" style={{
         width: "1000px"
@@ -26,19 +25,19 @@ export default () => {
                     width:width,
                     maxHeight:height,
                 }}
-                audio={audioEnabled}
-                video={videoEnabled}
+                muted={muted}
+                paused={paused}
             />
         </div>
         <div className="videoControls" style={{
             display: "flex",
         }}>
             <button onClick={() => {
-                setAudioEnabled(!audioEnabled)
-            }}>{audioEnabled ? "mute audio" : "enable audio"}</button>
+                setMuted(!muted)
+            }}>{muted ? "unmute audio" : "unmute audio"}</button>
             <button onClick={() => {
-                setVideoEnabled(!videoEnabled)
-            }}>{videoEnabled ? "disable video" : "enable video"}</button>
+                setPaused(!paused)
+            }}>{paused ? "unpause video" : "pause video"}</button>
         </div>
     </div>
 }
