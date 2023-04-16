@@ -18,6 +18,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/lib/common/ClientConnection_inprog.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/lib/common/ClientConnection.ts", "src/lib/common/ConnectionClient.js"],
   "exclude": ["node_modules"]
 }

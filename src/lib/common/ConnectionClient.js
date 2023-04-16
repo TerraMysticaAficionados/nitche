@@ -9,6 +9,7 @@ class ConnectionClient {
       clearTimeout,
       host: '',
       prefix: '.',
+      streamId: "",
       setTimeout,
       timeToHostCandidates: TIME_TO_HOST_CANDIDATES,
       ...options
@@ -16,7 +17,8 @@ class ConnectionClient {
 
     const {
       prefix,
-      host
+      host,
+      streamId
     } = options;
 
     this.createConnection = async (options = {}) => {
@@ -31,7 +33,7 @@ class ConnectionClient {
         stereo
       } = options;
 
-      const response1 = await fetch(`${host}${prefix}/connections`, {
+      const response1 = await fetch(`${host}${prefix}/connections/${streamId}`, {
         method: 'POST'
       });
 

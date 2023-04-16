@@ -2,14 +2,16 @@ import { useEffect, useRef } from "react"
 import ConnectionClient from '@/lib/common/ConnectionClient'
 
 export interface UseMediaStreamWebRTCConnectionProps {
-    host:string,
-    prefix: string,
-    audioEnabled: boolean
-    videoEnabled: boolean
-    getMediaStream: () => Promise<MediaStream|null|undefined>
+    streamId: string,
+    host?:string,
+    prefix?: string,
+    audioEnabled?: boolean
+    videoEnabled?: boolean
+    getMediaStream?: () => Promise<MediaStream|null|undefined>
 }
 
 export function useMediaStreamWebRTCConnection({
+    streamId,
     host = "http://localhost:8080/",
     prefix = "webrtc-broadcaster",
     audioEnabled = true,
@@ -24,7 +26,7 @@ export function useMediaStreamWebRTCConnection({
             audio: true,
         })
     }
-}: Partial<UseMediaStreamWebRTCConnectionProps> = {}) {
+}: UseMediaStreamWebRTCConnectionProps) {
     const localPeerConnection = useRef<RTCPeerConnection|null>(null)
     let mediaStream = useRef<MediaStream|null|undefined>(null)
 

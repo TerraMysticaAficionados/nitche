@@ -1,16 +1,17 @@
 import { useRef } from "react"
 import { useMediaStreamWebRTCConnection } from "@/lib/hooks/useMediaStreamWebRTCConnection"
-import type { UseMediaStreamWebRTCConnectionProps } from "@/lib/hooks/useMediaStreamWebRTCConnection"
 
-export interface WebRTCRecorderProps extends UseMediaStreamWebRTCConnectionProps {
+export interface WebRTCRecorderProps {
+    streamId: string,
     style: React.CSSProperties
-    controls: boolean
-    muted: boolean
-    paused: boolean,
-    autoPlay: boolean
+    controls?: boolean
+    muted?: boolean
+    paused?: boolean,
+    autoPlay?: boolean
 }
 
-export const WebRTCRecorder: React.FC<Partial<WebRTCRecorderProps>> = ({
+export const WebRTCRecorder: React.FC<WebRTCRecorderProps> = ({
+    streamId,
     style,
     muted = true,
     controls = true,
@@ -19,6 +20,7 @@ export const WebRTCRecorder: React.FC<Partial<WebRTCRecorderProps>> = ({
 }) => {
     const videoRef = useRef<HTMLVideoElement>(null)
     useMediaStreamWebRTCConnection({
+        streamId,
         audioEnabled: !muted && !paused,
         videoEnabled: !paused,
         getMediaStream: async () => {
