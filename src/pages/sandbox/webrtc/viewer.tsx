@@ -25,7 +25,11 @@ export default () => {
             <button onClick={() => {
                 setVideoEnabled(!videoEnabled)
             }}>{videoEnabled ? "disable video" : "enable video"}</button>
-                <WebRTCVideo style={{width:width, maxHeight:height}} autoPlay={true}/> 
+                <WebRTCVideo 
+                    broadcastId="sandbox-broadcast"
+                    style={{width:width, maxHeight:height}}
+                    autoPlay={true}
+                /> 
         </div>
     </div>
 }

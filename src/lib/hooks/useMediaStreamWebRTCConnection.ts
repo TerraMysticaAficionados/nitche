@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react"
 import ConnectionClient from '@/lib/common/ConnectionClient'
 
 export interface UseMediaStreamWebRTCConnectionProps {
-    streamId: string,
+    broadcastId: string,
     host?:string,
     prefix?: string,
     audioEnabled?: boolean
@@ -11,7 +11,7 @@ export interface UseMediaStreamWebRTCConnectionProps {
 }
 
 export function useMediaStreamWebRTCConnection({
-    streamId,
+    broadcastId,
     host = "http://localhost:8080/",
     prefix = "webrtc-broadcaster",
     audioEnabled = true,
@@ -47,7 +47,10 @@ export function useMediaStreamWebRTCConnection({
             } else if (localMediaStream == null) {
                 return
             }
-            const connectionClient = new ConnectionClient({host, prefix, streamId})
+            const connectionClient = new ConnectionClient({host, prefix, params: {
+                broadcastId, 
+                broadcaster: true
+            }})
             mediaStream.current = localMediaStream
             return connectionClient.createConnection({
                 beforeAnswer: (peerConnection:RTCPeerConnection) => {

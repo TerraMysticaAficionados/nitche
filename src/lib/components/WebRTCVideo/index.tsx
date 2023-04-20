@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react"
 import ConnectionClient from "@/lib/common/ConnectionClient"
 
 export interface WebRTCVideoProps {
+    broadcastId: string,
     style?: React.CSSProperties
     controls?: boolean
     muted?: boolean
@@ -10,6 +11,7 @@ export interface WebRTCVideoProps {
 }
 
 export const WebRTCVideo:React.FC<WebRTCVideoProps>  = ({
+    broadcastId,
     style,
     controls = false,
     muted = true,
@@ -17,7 +19,7 @@ export const WebRTCVideo:React.FC<WebRTCVideoProps>  = ({
     poster = undefined,
 }) => {
     const videoRef = useRef<HTMLVideoElement>(null)
-    useWebRTCRef(videoRef)
+    useWebRTCRef(broadcastId, videoRef)
     return <video   //  advantages/disadvantages with canvas
         ref={videoRef}
         controls={controls}
@@ -32,7 +34,7 @@ export const WebRTCVideo:React.FC<WebRTCVideoProps>  = ({
  * @param videoRef
  * @returns
  */
-export function useWebRTCRef(videoRef:React.RefObject<HTMLVideoElement>) {
+export function useWebRTCRef(broadcastId:string, videoRef:React.RefObject<HTMLVideoElement>) {
     const localPeerConnection = useRef<RTCPeerConnection|null>(null)
     useEffect(() => {
         if(videoRef.current == undefined) return
@@ -40,10 +42,7 @@ export function useWebRTCRef(videoRef:React.RefObject<HTMLVideoElement>) {
         const connectionClient = new ConnectionClient({
             host: "http://localhost:8080/",
             prefix: "webrtc-viewer",
-            streamId: "sandbox-viewer",
-            params: {
-                broadcastId: "sandbox-broadcast"
-            }
+            params: {broadcastId}
         })
         let canceled = false
         connectionClient.createConnection({

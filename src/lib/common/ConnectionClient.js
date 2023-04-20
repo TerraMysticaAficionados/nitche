@@ -19,7 +19,6 @@ class ConnectionClient {
     const {
       prefix,
       host,
-      streamId,
       params
     } = options;
 
@@ -35,7 +34,7 @@ class ConnectionClient {
         stereo
       } = options;
 
-      const response1 = await fetch(`${host}${prefix}/connections${streamId ? `/${streamId}` : ``}`, {
+      const response1 = await fetch(`${host}${prefix}/connections`, {
         method: 'POST',
         body: JSON.stringify(params),
         headers: {
