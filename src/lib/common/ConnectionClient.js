@@ -11,6 +11,7 @@ class ConnectionClient {
       prefix: '.',
       streamId: "",
       setTimeout,
+      params: {},
       timeToHostCandidates: TIME_TO_HOST_CANDIDATES,
       ...options
     };
@@ -18,7 +19,8 @@ class ConnectionClient {
     const {
       prefix,
       host,
-      streamId
+      streamId,
+      params
     } = options;
 
     this.createConnection = async (options = {}) => {
@@ -33,8 +35,12 @@ class ConnectionClient {
         stereo
       } = options;
 
-      const response1 = await fetch(`${host}${prefix}/connections/${streamId}`, {
-        method: 'POST'
+      const response1 = await fetch(`${host}${prefix}/connections${streamId ? `/${streamId}` : ``}`, {
+        method: 'POST',
+        body: JSON.stringify(params),
+        headers: {
+          "content-type": "application/json"
+        }
       });
 
       const remotePeerConnection = await response1.json();

@@ -39,7 +39,11 @@ export function useWebRTCRef(videoRef:React.RefObject<HTMLVideoElement>) {
         const videoElem = videoRef.current
         const connectionClient = new ConnectionClient({
             host: "http://localhost:8080/",
-            prefix: "webrtc-viewer"
+            prefix: "webrtc-viewer",
+            streamId: "sandbox-viewer",
+            params: {
+                broadcastId: "sandbox-broadcast"
+            }
         })
         let canceled = false
         connectionClient.createConnection({
@@ -53,7 +57,10 @@ export function useWebRTCRef(videoRef:React.RefObject<HTMLVideoElement>) {
                 })
             }
         }).then(peerConnection => {
-            if(canceled) peerConnection.close()
+            if(canceled) {
+                peerConnection.close()
+                return
+            }
             localPeerConnection.current = peerConnection || null
         }).catch(error => {
             localPeerConnection?.current?.close()

@@ -21,7 +21,7 @@ export default () => {
             display: "flex",
         }}>
             <WebRTCRecorder
-                streamId="sandbox-stream-id"
+                streamId="sandbox-broadcast"
                 style={{
                     width:width,
                     maxHeight:height,
