@@ -12,15 +12,16 @@ export const SecretDoor:React.FC<SecretDoorProps> = ({children}) => {
     setCookie("key-cookie",null)
   }, [])
   return <CookiesProvider>
-      <button onClick={() => {
+      <div onClick={() => {
         times.push(Date.now())
         if(times.length > 5) {times.shift()}
         if(matchingTimes(times)) {
+          console.log("set key")
           setCookie("key-cookie", "cookie-key", {
             maxAge: KEY_COOKIE_MAX_AGE_SECONDS
           })
         }
-    }}>{children}</button>
+    }}>{children}</div>
   </CookiesProvider>
 }
 //  not super secret but enough to keep it out of the way.

@@ -9,7 +9,9 @@ export default () => {
       height: '100vh',
       backgroundColor: 'white',
     }}>
-      <Navbar/>
+      <SecretDoor>
+        <Navbar/>
+      </SecretDoor>
       <div style={{
         height: '100%',
         width: '100%',
@@ -23,7 +25,6 @@ export default () => {
           // className='flex flex-col h-full w-full
           //             ml-14 lg:ml-52 bg-green-300'
           >
-            <SecretDoor>Knock</SecretDoor>
             <WebRTCVideo/>
 
             <section id="info" className='h-full'> hi i'm david beame the greatest streamer in a generation</section>
