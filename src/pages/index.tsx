@@ -1,6 +1,8 @@
 import Navbar from '../lib/components/Navbar';
 import Sidebar from '../lib/components/Sidebar';
 import { WebRTCVideo } from '@/lib/components/WebRTCVideo';
+import {SecretDoor} from '@/lib/components/SecretDoor';
+
 export default () => {
   return (
     <div style={{
@@ -21,6 +23,7 @@ export default () => {
           // className='flex flex-col h-full w-full
           //             ml-14 lg:ml-52 bg-green-300'
           >
+            <SecretDoor>Knock</SecretDoor>
             <WebRTCVideo/>
 
             <section id="info" className='h-full'> hi i'm david beame the greatest streamer in a generation</section>
