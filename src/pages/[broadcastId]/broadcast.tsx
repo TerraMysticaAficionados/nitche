@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import useWindowSize from "@/lib/hooks/useWindowSize";
 import { WebRTCBroadcaster } from "@/lib/components/WebRTCBroadcaster";
+import { BroadcastShare } from "@/lib/components/BroadcastShare";
 
 /**
  * webrtc/broadcaster.tsx
@@ -14,14 +15,16 @@ export default () => {
     const { width, height } = useWindowSize()
     const [muted, setMuted] = useState(true)
     const [paused, setPaused] = useState(false)
-    if(router.query.broadcastId == null) {
+    if(typeof(router.query.broadcastId) != 'string') {
         return <div></div>
     }
-    console.log(router.query.broadcastId)
 
     return <div className="flex flex-col absolute left-0 right-0 top-0 bottom-0">
         <div className="flex flex-row justify-center">
-            <div className="fullscreenVideoContainer flex">
+            <div className="fullscreenVideoContainer flex flex-col">
+                <div className="flex self-center">
+                    <BroadcastShare broadcastName={router.query.broadcastId}/>
+                </div>
                 <div className="flex">
                     <WebRTCBroadcaster
                         broadcastId={router.query.broadcastId as string}
