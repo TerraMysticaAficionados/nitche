@@ -16,6 +16,7 @@ export default () => {
     const { width, height } = useWindowSize()
     const [muted, setMuted] = useState(true)
     const [paused, setPaused] = useState(false)
+    const [broadcasting, setBroadcasting] = useState(true)
     if(typeof(router.query.broadcastId) != 'string') {
         return <div></div>
     }
@@ -42,12 +43,20 @@ export default () => {
                             setMuted(!muted)
                         }}>{muted ? <FaVolumeMute /> : <FaVolumeUp />}</button>
                     </div>
-                    <div className="relative px-2 items-center border border-red-600 rounded-md cursor-pointer" onClick={async () => {
-                        const result = await confirm("End Broadcast?")
+                    {broadcasting 
+                    ? <div className="relative px-2 items-center border border-red-600 rounded-md cursor-pointer" onClick={async () => {
+                            const result = await confirm("End Broadcast?")
+                        }}>
+                            <button className="mx-2 bg-red-600 rounded-full h-4 w-4 border-red-200 border-2 border-double"></button>
+                            BROADCASTING
+                        </div>
+                    : <div className="relative px-2 items-center border border-slate-500 rounded-md cursor-pointer" onClick={async () => {
+                        const result = await confirm("Start Broadcast?")
                     }}>
-                        <button className="mx-2 bg-red-600 rounded-full h-4 w-4 border-red-200 border-2 border-double"></button>
-                        BROADCASTING
+                        <button className="mx-2 bg-slate-500 rounded-full h-4 w-4 border-slate-500 border-2 border-double"></button>
+                        OFFLINE
                     </div>
+                    }
                 </div>
             </div>
             {/* Gutter Right */}

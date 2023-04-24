@@ -7,6 +7,7 @@ export interface UseMediaStreamWebRTCConnectionProps {
     prefix?: string,
     audioEnabled?: boolean
     videoEnabled?: boolean
+    broadcasting?: boolean
     getMediaStream?: () => Promise<MediaStream|null|undefined>
 }
 
@@ -16,6 +17,7 @@ export function useMediaStreamWebRTCConnection({
     prefix = "webrtc-broadcaster",
     audioEnabled = true,
     videoEnabled = true,
+    broadcasting = false,
     getMediaStream = async () => {
         if(navigator.mediaDevices.getUserMedia == undefined) {
             alert('Your browser does not support getUserMedia API');
