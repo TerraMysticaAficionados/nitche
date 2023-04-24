@@ -1,20 +1,20 @@
 import { useRef } from "react"
 import { useMediaStreamWebRTCConnection } from "@/lib/hooks/useMediaStreamWebRTCConnection"
 
-export interface WebRTCRecorderProps {
+export interface WebRTCBroadcasterProps {
     broadcastId: string,
-    style: React.CSSProperties
+    style?: React.CSSProperties
     controls?: boolean
     muted?: boolean
     paused?: boolean,
     autoPlay?: boolean
 }
 
-export const WebRTCRecorder: React.FC<WebRTCRecorderProps> = ({
+export const WebRTCBroadcaster: React.FC<WebRTCBroadcasterProps> = ({
     broadcastId,
     style,
     muted = true,
-    controls = true,
+    controls = false,
     autoPlay = true,
     paused = false  //  pauses audio + video
 }) => {

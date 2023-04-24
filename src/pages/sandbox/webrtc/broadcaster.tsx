@@ -1,7 +1,6 @@
 import { useState } from "react";
 import useWindowSize from "@/lib/hooks/useWindowSize";
-import { WebRTCRecorder } from "@/lib/components/WebRTCRecorder";
-import { randomUUID } from "crypto";
+import { WebRTCBroadcaster } from "@/lib/components/WebRTCBroadcaster";
 
 /**
  * webrtc/broadcaster.tsx
@@ -20,7 +19,7 @@ export default () => {
         <div className="fullscreenVideoContainer" style={{
             display: "flex",
         }}>
-            <WebRTCRecorder
+            <WebRTCBroadcaster
                 broadcastId="sandbox-broadcast"
                 style={{
                     width:width,

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import useWindowSize from "@/lib/hooks/useWindowSize";
-import { WebRTCRecorder } from "@/lib/components/WebRTCRecorder";
-import { v4 as uuidv4 } from "uuid";
+import { WebRTCBroadcaster } from "@/lib/components/WebRTCBroadcaster";
+
 /**
  * webrtc/broadcaster.tsx
  * Preview for a user what they're camera is capturing.
@@ -19,31 +19,26 @@ export default () => {
     }
     console.log(router.query.broadcastId)
 
-    return <div className="videoContainer" style={{
-        width: "1000px"
-    }} >
-        <div className="fullscreenVideoContainer" style={{
-            display: "flex",
-        }}>
-            <WebRTCRecorder
-                broadcastId={router.query.broadcastId as string}
-                style={{
-                    width:width,
-                    maxHeight:height,
-                }}
-                muted={muted}
-                paused={paused}
-            />
-        </div>
-        <div className="videoControls" style={{
-            display: "flex",
-        }}>
-            <button onClick={() => {
-                setMuted(!muted)
-            }}>{muted ? "unmute audio" : "unmute audio"}</button>
-            <button onClick={() => {
-                setPaused(!paused)
-            }}>{paused ? "unpause video" : "pause video"}</button>
+    return <div className="flex flex-col absolute left-0 right-0 top-0 bottom-0">
+        <div className="flex flex-row justify-center">
+            <div className="fullscreenVideoContainer flex">
+                <div className="flex">
+                    <WebRTCBroadcaster
+                        broadcastId={router.query.broadcastId as string}
+                        muted={muted}
+                        paused={paused}
+                    />
+                </div>
+            </div>
+            <div className="flex flex-col">
+                <button>End Broadcast</button>
+                <button onClick={() => {
+                    setPaused(!paused)
+                }}>{paused ? "Start Video" : "Stop Video"}</button>
+                <button onClick={() => {
+                    setMuted(!muted)
+                }}>{muted ? "Mute" : "Unmute"}</button>
+            </div>
         </div>
     </div>
 }

@@ -21,10 +21,7 @@ export default () => {
         <div className='flex w-full h-full'>
 
         <main
-          className='flex flex-col items-stretch h-full w-full ml-14 lg:ml-52 bg-green-300'
-          // className='flex flex-col h-full w-full
-          //             ml-14 lg:ml-52 bg-green-300'
-          >
+          className='flex flex-col items-stretch h-full w-full ml-14 lg:ml-52 bg-green-300'>
             <WebRTCVideo/>
 
             <section id="info" className='h-full'> hi i'm david beame the greatest streamer in a generation</section>
