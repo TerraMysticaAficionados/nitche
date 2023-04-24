@@ -1,13 +1,17 @@
 import Navbar from '../lib/components/Navbar';
 import Sidebar from '../lib/components/Sidebar';
 import { WebRTCVideo } from '@/lib/components/WebRTCVideo';
+import {SecretDoor} from '@/lib/components/SecretDoor';
+
 export default () => {
   return (
     <div style={{
       height: '100vh',
       backgroundColor: 'white',
     }}>
-      <Navbar/>
+      <SecretDoor>
+        <Navbar/>
+      </SecretDoor>
       <div style={{
         height: '100%',
         width: '100%',
