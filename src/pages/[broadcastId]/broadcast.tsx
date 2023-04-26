@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import useWindowSize from "@/lib/hooks/useWindowSize";
 import { WebRTCBroadcaster } from "@/lib/components/WebRTCBroadcaster";
 import { BroadcastShare } from "@/lib/components/BroadcastShare";
+import { BroadcastButton } from "@/lib/components/BroadcastingButton";
 import {FaVolumeMute, FaVolumeUp, FaVideoSlash, FaVideo} from "react-icons/fa"
 
 /**
@@ -30,6 +31,7 @@ export default () => {
                 <div className="flex">
                     <WebRTCBroadcaster
                         broadcastId={router.query.broadcastId as string}
+                        broadcasting={broadcasting}
                         muted={muted}
                         paused={paused}
                     />
@@ -43,20 +45,15 @@ export default () => {
                             setMuted(!muted)
                         }}>{muted ? <FaVolumeMute /> : <FaVolumeUp />}</button>
                     </div>
-                    {broadcasting 
-                    ? <div className="relative px-2 items-center border border-red-600 rounded-md cursor-pointer" onClick={async () => {
-                            const result = await confirm("End Broadcast?")
-                        }}>
-                            <button className="mx-2 bg-red-600 rounded-full h-4 w-4 border-red-200 border-2 border-double"></button>
-                            BROADCASTING
-                        </div>
-                    : <div className="relative px-2 items-center border border-slate-500 rounded-md cursor-pointer" onClick={async () => {
-                        const result = await confirm("Start Broadcast?")
-                    }}>
-                        <button className="mx-2 bg-slate-500 rounded-full h-4 w-4 border-slate-500 border-2 border-double"></button>
-                        OFFLINE
-                    </div>
-                    }
+                    {<BroadcastButton 
+                        initialBroadcastingState={broadcasting} 
+                        onEndBroadcastConfirm={() => {
+                            setBroadcasting(false)
+                        }}
+                        onStartBroadcastConfirm={() => {
+                            setBroadcasting(true)
+                        }}
+                    />}
                 </div>
             </div>
             {/* Gutter Right */}
