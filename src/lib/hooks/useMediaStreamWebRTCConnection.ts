@@ -115,20 +115,6 @@ export function useMediaStreamWebRTCConnection({
         })
     }, [audioEnabled, videoEnabled])
 
-    // useEffect(() => {
-    //     if(!getMediaStream || !closeMediaStream) {
-    //         throw new Error("Cannot useMediaStreamWebRTCConnection without a media stream corresponding destructor function, see comments in useMediaStreamWebRTCConnection for usage instructions.")
-    //     }
-    //     connectMediaStreamToWebRTC()
-    //     return () => {
-    //         localPeerConnection?.current?.close()
-    //         if(mediaStream.current != undefined) {
-    //             closeMediaStream(mediaStream.current)
-    //         }
-    //         cancelInProgressConnection = true
-    //     }
-    // }, [])
-
     return {
         peerConnectionRef: localPeerConnection,
         mediaStreamRef: mediaStream,
