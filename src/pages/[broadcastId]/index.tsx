@@ -34,7 +34,7 @@ export default () => {
           broadcastId={router.query.broadcastId as string}
           style={{width:width, maxHeight:height}}
           autoPlay={true}
-          muted={true}
+          controls={true}
         /> 
     </div>
   </div>

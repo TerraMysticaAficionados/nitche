@@ -94,12 +94,6 @@ export function useMediaStreamWebRTCConnection({
                 console.log("useEffect init")
                 connectMediaStreamToWebRTC()
             }
-            mediaStream?.current?.getAudioTracks().forEach(track => {
-                track.enabled = audioEnabled
-            })
-            mediaStream?.current?.getVideoTracks().forEach(track => {
-                track.enabled = videoEnabled
-            })
         }
 
         return () => {
@@ -110,7 +104,16 @@ export function useMediaStreamWebRTCConnection({
             }
             cancelInProgressConnection = true
         }
-    }, [audioEnabled, videoEnabled, broadcasting])
+    }, [broadcasting])
+
+    useEffect(() => {
+        mediaStream?.current?.getAudioTracks().forEach(track => {
+            track.enabled = audioEnabled
+        })
+        mediaStream?.current?.getVideoTracks().forEach(track => {
+            track.enabled = videoEnabled
+        })
+    }, [audioEnabled, videoEnabled])
 
     // useEffect(() => {
     //     if(!getMediaStream || !closeMediaStream) {

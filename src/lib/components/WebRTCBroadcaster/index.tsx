@@ -51,5 +51,5 @@ export const WebRTCBroadcaster: React.FC<WebRTCBroadcasterProps> = ({
             return true
         }
     })
-    return <video ref={videoRef} autoPlay={autoPlay} style={style} controls={controls} muted={muted} />
+    return <video ref={videoRef} autoPlay={autoPlay} style={style} controls={controls} muted={true} />
 }
