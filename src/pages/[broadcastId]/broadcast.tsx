@@ -17,7 +17,7 @@ export default () => {
     const { width, height } = useWindowSize()
     const [muted, setMuted] = useState(true)
     const [paused, setPaused] = useState(false)
-    const [broadcasting, setBroadcasting] = useState(true)
+    const [broadcasting, setBroadcasting] = useState(false)
     if(typeof(router.query.broadcastId) != 'string') {
         return <div></div>
     }

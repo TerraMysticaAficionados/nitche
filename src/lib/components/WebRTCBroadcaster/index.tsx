@@ -40,6 +40,15 @@ export const WebRTCBroadcaster: React.FC<WebRTCBroadcasterProps> = ({
                 }
                 return mediaStream
             })
+        },
+        closeMediaStream: async (mediaStream) => {
+            mediaStream.getTracks().forEach((track) => {
+                track.stop()
+            })
+            if(videoRef?.current != undefined){
+                videoRef.current.srcObject = null
+            }
+            return true
         }
     })
     return <video ref={videoRef} autoPlay={autoPlay} style={style} controls={controls} muted={muted} />
