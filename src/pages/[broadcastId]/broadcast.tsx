@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useWindowSize from "@/lib/hooks/useWindowSize";
 import { WebRTCBroadcaster } from "@/lib/components/WebRTCBroadcaster";
 import { BroadcastShare } from "@/lib/components/BroadcastShare";
 import { BroadcastButton } from "@/lib/components/BroadcastingButton";
 import {FaVolumeMute, FaVolumeUp, FaVideoSlash, FaVideo} from "react-icons/fa"
+import { NitcheServerApi } from "@/lib/common/NitcheServerApi";
 
 /**
  * webrtc/broadcaster.tsx
@@ -18,6 +19,25 @@ export default () => {
     const [muted, setMuted] = useState(true)
     const [paused, setPaused] = useState(false)
     const [broadcasting, setBroadcasting] = useState(false)
+    const [canBroadcast, setCanBroadcast] = useState(false)
+
+    useEffect(() => {
+        let canceled = false
+        NitcheServerApi.getBroadcastList().then(data => {
+            if(canceled) return false
+            for(const existingBroacast of data) {
+                if(existingBroacast == router.query.broadcastId) {
+                    setCanBroadcast(false)
+                    return false
+                }
+            }
+            setCanBroadcast(true)
+        })
+        return () => {
+            canceled = true
+        }
+    }, [router.query.broadcastId])
+
     if(typeof(router.query.broadcastId) != 'string') {
         return <div></div>
     }
@@ -45,7 +65,7 @@ export default () => {
                             setMuted(!muted)
                         }}>{muted ? <FaVolumeMute /> : <FaVolumeUp />}</button>
                     </div>
-                    {<BroadcastButton 
+                    {canBroadcast ? <BroadcastButton 
                         initialBroadcastingState={broadcasting} 
                         onEndBroadcastConfirm={() => {
                             setBroadcasting(false)
@@ -53,7 +73,7 @@ export default () => {
                         onStartBroadcastConfirm={() => {
                             setBroadcasting(true)
                         }}
-                    />}
+                    /> : "Cannot broadcast"}
                 </div>
             </div>
             {/* Gutter Right */}
