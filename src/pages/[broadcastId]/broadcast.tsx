@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useWindowSize from "@/lib/hooks/useWindowSize";
 import { WebRTCBroadcaster } from "@/lib/components/WebRTCBroadcaster";
 import { BroadcastShare } from "@/lib/components/BroadcastShare";
+import { BroadcastButton } from "@/lib/components/BroadcastingButton";
 import {FaVolumeMute, FaVolumeUp, FaVideoSlash, FaVideo} from "react-icons/fa"
+import { NitcheServerApi } from "@/lib/common/NitcheServerApi";
 
 /**
  * webrtc/broadcaster.tsx
@@ -16,6 +18,26 @@ export default () => {
     const { width, height } = useWindowSize()
     const [muted, setMuted] = useState(true)
     const [paused, setPaused] = useState(false)
+    const [broadcasting, setBroadcasting] = useState(false)
+    const [canBroadcast, setCanBroadcast] = useState(false)
+
+    useEffect(() => {
+        let canceled = false
+        NitcheServerApi.getBroadcastList().then(data => {
+            if(canceled) return false
+            for(const existingBroacast of data) {
+                if(existingBroacast == router.query.broadcastId) {
+                    setCanBroadcast(false)
+                    return false
+                }
+            }
+            setCanBroadcast(true)
+        })
+        return () => {
+            canceled = true
+        }
+    }, [router.query.broadcastId])
+
     if(typeof(router.query.broadcastId) != 'string') {
         return <div></div>
     }
@@ -29,6 +51,7 @@ export default () => {
                 <div className="flex">
                     <WebRTCBroadcaster
                         broadcastId={router.query.broadcastId as string}
+                        broadcasting={broadcasting}
                         muted={muted}
                         paused={paused}
                     />
@@ -42,12 +65,15 @@ export default () => {
                             setMuted(!muted)
                         }}>{muted ? <FaVolumeMute /> : <FaVolumeUp />}</button>
                     </div>
-                    <div className="relative px-2 items-center border border-red-600 rounded-md cursor-pointer" onClick={async () => {
-                        const result = await confirm("End Broadcast?")
-                    }}>
-                        <button className="mx-2 bg-red-600 rounded-full h-4 w-4 border-red-200 border-2 border-double"></button>
-                        BROADCASTING
-                    </div>
+                    {canBroadcast ? <BroadcastButton 
+                        initialBroadcastingState={broadcasting} 
+                        onEndBroadcastConfirm={() => {
+                            setBroadcasting(false)
+                        }}
+                        onStartBroadcastConfirm={() => {
+                            setBroadcasting(true)
+                        }}
+                    /> : "Cannot broadcast"}
                 </div>
             </div>
             {/* Gutter Right */}

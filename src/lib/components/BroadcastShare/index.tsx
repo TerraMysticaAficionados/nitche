@@ -5,7 +5,7 @@ interface BroadcastShareProps {
 }
 
 function getBroadcastUrl(broadcastId:string) {
-  return "https://localhost:3000/" + broadcastId
+  return "http://localhost:3000/" + broadcastId
 }
 
 export const BroadcastShare: React.FC<BroadcastShareProps> = ({broadcastName}) => {

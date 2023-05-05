@@ -7,7 +7,8 @@ export interface WebRTCBroadcasterProps {
     controls?: boolean
     muted?: boolean
     paused?: boolean,
-    autoPlay?: boolean
+    autoPlay?: boolean,
+    broadcasting?: boolean
 }
 
 export const WebRTCBroadcaster: React.FC<WebRTCBroadcasterProps> = ({
@@ -16,13 +17,15 @@ export const WebRTCBroadcaster: React.FC<WebRTCBroadcasterProps> = ({
     muted = true,
     controls = false,
     autoPlay = true,
-    paused = false  //  pauses audio + video
+    paused = false,  //  pauses audio + video
+    broadcasting=false,    //  if true, not broadcasting
 }) => {
     const videoRef = useRef<HTMLVideoElement>(null)
     useMediaStreamWebRTCConnection({
         broadcastId,
         audioEnabled: !muted && !paused,
         videoEnabled: !paused,
+        broadcasting,
         getMediaStream: async () => {
             if(navigator.mediaDevices.getUserMedia == undefined) {
                 alert('Your browser does not support getUserMedia API');
@@ -37,7 +40,16 @@ export const WebRTCBroadcaster: React.FC<WebRTCBroadcasterProps> = ({
                 }
                 return mediaStream
             })
+        },
+        closeMediaStream: async (mediaStream) => {
+            mediaStream.getTracks().forEach((track) => {
+                track.stop()
+            })
+            if(videoRef?.current != undefined){
+                videoRef.current.srcObject = null
+            }
+            return true
         }
     })
-    return <video ref={videoRef} autoPlay={autoPlay} style={style} controls={controls} muted={muted} />
+    return <video ref={videoRef} autoPlay={autoPlay} style={style} controls={controls} muted={true} />
 }
